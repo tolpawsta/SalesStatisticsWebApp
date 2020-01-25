@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace SalesStatistics.DAL.Entities
 {
-    class Product
+    public class Product
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal Cost { get; set; }
     }
 }
