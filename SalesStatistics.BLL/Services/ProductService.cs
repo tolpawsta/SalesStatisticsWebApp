@@ -1,12 +1,9 @@
 ﻿using SalesStatistics.Core.Interfaces;
 using SalesStatistics.Core.Models;
-using SalesStatistics.DAL.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using System.Linq;
 using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SalesStatistics.BLL.Services
 {
@@ -30,8 +27,7 @@ namespace SalesStatistics.BLL.Services
             {
                 return await allOrderedByOrdersProducts.Take(count).ToListAsync();
             }
-            return await allOrderedByOrdersProducts.ToListAsync();
-            
+            return await allOrderedByOrdersProducts.ToListAsync();            
         }
     }
 }
