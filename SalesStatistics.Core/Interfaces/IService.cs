@@ -10,5 +10,6 @@ namespace SalesStatistics.Core.Interfaces
     {
         Task<IEnumerable<T>> GetTopCountAsync(int count);
         Task<T> GetByIdAsync(int id);
+        Task<IEnumerable<T>> GetAllAsync();
     }
 }

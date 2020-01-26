@@ -15,6 +15,11 @@ namespace SalesStatistics.BLL.Services
             _repository = repository;
         }
 
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await _repository.All.ToListAsync();
+        }
+
         public async Task<Product> GetByIdAsync(int id)
         {
             return await _repository.All.Where(p => p.Id == id).FirstOrDefaultAsync<Product>();
