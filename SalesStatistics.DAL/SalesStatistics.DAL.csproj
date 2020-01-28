@@ -59,10 +59,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\AppDbContext.cs" />
-    <Compile Include="Identity\ApplicationUserManager.cs" />
     <Compile Include="Migrations\202001251621284_InitDb.cs" />
     <Compile Include="Migrations\202001251621284_InitDb.Designer.cs">
       <DependentUpon>202001251621284_InitDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001261849388_UpdateUser.cs" />
+    <Compile Include="Migrations\202001261849388_UpdateUser.Designer.cs">
+      <DependentUpon>202001261849388_UpdateUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001271923011_InitUserPassword.cs" />
+    <Compile Include="Migrations\202001271923011_InitUserPassword.Designer.cs">
+      <DependentUpon>202001271923011_InitUserPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001271952447_RemoveUserProperties.cs" />
+    <Compile Include="Migrations\202001271952447_RemoveUserProperties.Designer.cs">
+      <DependentUpon>202001271952447_RemoveUserProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001272003382_ChangeUserNameAnnotation.cs" />
+    <Compile Include="Migrations\202001272003382_ChangeUserNameAnnotation.Designer.cs">
+      <DependentUpon>202001272003382_ChangeUserNameAnnotation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001272046106_RemoveNameFromUser.cs" />
+    <Compile Include="Migrations\202001272046106_RemoveNameFromUser.Designer.cs">
+      <DependentUpon>202001272046106_RemoveNameFromUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001280810220_New.cs" />
+    <Compile Include="Migrations\202001280810220_New.Designer.cs">
+      <DependentUpon>202001280810220_New.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,10 +101,30 @@
       <Name>SalesStatistics.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Identity\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202001251621284_InitDb.resx">
       <DependentUpon>202001251621284_InitDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001261849388_UpdateUser.resx">
+      <DependentUpon>202001261849388_UpdateUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001271923011_InitUserPassword.resx">
+      <DependentUpon>202001271923011_InitUserPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001271952447_RemoveUserProperties.resx">
+      <DependentUpon>202001271952447_RemoveUserProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001272003382_ChangeUserNameAnnotation.resx">
+      <DependentUpon>202001272003382_ChangeUserNameAnnotation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001272046106_RemoveNameFromUser.resx">
+      <DependentUpon>202001272046106_RemoveNameFromUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001280810220_New.resx">
+      <DependentUpon>202001280810220_New.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

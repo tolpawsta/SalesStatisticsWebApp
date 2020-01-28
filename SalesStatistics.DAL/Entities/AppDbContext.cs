@@ -4,7 +4,7 @@ using System.Data.Entity;
 
 namespace SalesStatistics.DAL.Entities
 {
-    public class AppDbContext:IdentityDbContext<IdentityUser>
+    public class AppDbContext:IdentityDbContext<User>
     {
         public AppDbContext():base("DefaultConnection")
         {

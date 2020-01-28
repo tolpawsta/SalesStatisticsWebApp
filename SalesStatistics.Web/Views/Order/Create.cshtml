@@ -1,0 +1,59 @@
+﻿@model SalesStatistics.Core.Models.Order
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Добавить менеджера</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Введите информацию</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <th scope="col">Дата заказа</th>
+                <th scope="col">Покупатель</th>
+                <th scope="col">Товар</th>
+                <th scope="col">Стоимость</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="col">
+                @Html.DropDownListFor(model=>model.Customer.FirstName.Concat(" ").Concat(model.Customer.LastName),this.ViewBag.CustomerList,new { @class = "form-control" })
+                </td>
+                <td scope="col">
+                Покупатель
+                </td>
+                <td scope="col">
+                Товар
+                </td>
+                <td scope="col">
+                Стоимость
+                </td>
+            </tr>
+        </tbody>
+    </table>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="FirstName">Имя</label>
+            <div class="col-md-10">
+
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", name = "FirstName" } })
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Добавить" class="btn btn-primary" />
+                @Html.ActionLink("Вернуться", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}
+

@@ -15,14 +15,13 @@ namespace SalesStatistics.Web.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
+            ViewBag.Message = "Sales Statistics Application.";
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Pavel Talochka.";
 
             return View();
         }

@@ -1,0 +1,37 @@
+﻿@model SalesStatistics.Core.Models.Manager
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Информация</h2>
+
+<div>
+    <h4>Покупатель</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+    </dl>
+    <h4>Заказы</h4>
+    @Html.Partial("_TableDitailsPartial", Model);  
+    
+</div>
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary", style = "float: left; margin-right: 5px" })
+    @Html.ActionLink("Вернуться", "Index", null, new { @class = "btn btn-primary" })    
+</p>

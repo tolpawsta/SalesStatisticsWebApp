@@ -11,20 +11,22 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
+            <div class="navbar-header navbar-dark">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Имя приложения", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Статистика продаж", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div id="navbarNavAltMarkup">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Информация", "About", "Home")</li>
-                    <li>@Html.ActionLink("Связаться", "Contact", "Home")</li>
+                    <li class="nav-item active">@Html.ActionLink("Продажи", "Index", "Order")</li>
                     <li>@Html.ActionLink("Продукты", "Index", "Product")</li>
+                    <li>@Html.ActionLink("Mенеджеры", "Index", "Manager")</li>
+                    <li>@Html.ActionLink("Информация", "About", "Home")</li>
+                    <li>@Html.ActionLink("Связаться", "Contact", "Home")</li>                    
+                   @Html.Partial("_LoginPartial")
                 </ul>
             </div>
         </div>
@@ -33,10 +35,9 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - мое приложение ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - Статистика продаж ASP.NET</p>
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

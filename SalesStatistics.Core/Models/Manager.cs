@@ -6,8 +6,7 @@ namespace SalesStatistics.Core.Models
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int ReportId { get; set; }
+        public string LastName { get; set; }        
         public virtual ICollection<Report> Reports { get; set; }
         public Manager()
         {

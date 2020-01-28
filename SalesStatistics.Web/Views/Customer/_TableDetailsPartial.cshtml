@@ -1,0 +1,32 @@
+﻿@using SalesStatistics.Core.Models
+@{Customer customer = (Customer)Model;}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Название</th>
+            <th scope="col">Стоимость</th>
+        </tr>
+    </thead>
+    @if ((customer != null) || (customer.Orders.Count() == 0))
+    {
+        <tr>
+            <td colspan="3" class="text-center">Заказов нету</td>
+        </tr>
+    }
+    else
+    {
+        int i = 0;
+        <tr>
+            @foreach (var item in customer.Orders)
+            {
+                <th scope="row">@(i = i + 1)</th>
+                <td>@item.Product.Name</td>
+                <td>@item.Product.Cost</td>
+            }
+        </tr>
+    }
+    <tbody>
+    </tbody>
+</table>

@@ -1,0 +1,42 @@
+﻿@model SalesStatistics.Core.Models.Manager
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Удалиние данных</h2>
+
+<h3>Подтвердите ваш выбор.</h3>
+<div>
+    <h4>Manager</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label class="control-label col-md-2" for="FirstName">Имя</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            <label class="control-label col-md-2" for="FirstName">Фамилия</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-primary" />
+            @Html.ActionLink("Вернуться", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using Microsoft.AspNet.Identity;
+using Ninject;
 using SalesStatistics.BLL.Services;
 using SalesStatistics.Core.Interfaces;
 using SalesStatistics.Core.Models;
@@ -30,7 +31,15 @@ namespace SalesStatistics.DI.Utils
         private void AddBinding()
         {
             _kernel.Bind<IService<Product>>().To<ProductService>();
+            _kernel.Bind<IService<Customer>>().To<CustomerService>();
+            _kernel.Bind<IService<Manager>>().To<ManagerService>();
+            _kernel.Bind<IService<Order>>().To<OrderService>();
+           // _kernel.Bind<IService<Role>>().To<RoleService>();
             _kernel.Bind<IRepository<Product>>().To<EfRepository<Product>>();
+            _kernel.Bind<IRepository<Manager>>().To<EfRepository<Manager>>();
+            _kernel.Bind<IRepository<Order>>().To<EfRepository<Order>>();
+            _kernel.Bind<IRepository<Customer>>().To<EfRepository<Customer>>();
+            _kernel.Bind<UserManager<User>>().To<SalesUserManager>();
         }
     }
 }

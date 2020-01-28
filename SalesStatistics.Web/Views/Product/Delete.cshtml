@@ -1,0 +1,43 @@
+﻿@model SalesStatistics.Core.Models.Product
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Удаление товара</h2>
+
+<h3>Вы уверены, что хотите удалить товар?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label class="control-label col-lg-6 text-info" style="width: 10px; font-size:20px;">
+                Название
+            </label>
+        </dt>
+
+        <dd>
+            <h4 style="font-size:20px;">@Html.DisplayFor(model => model.Name)</h4>
+        </dd>
+
+        <dt>
+            <label class="control-label col-lg-6 text-info" style="width: 10px; font-size:20px;">
+                Стоимость
+            </label>
+        </dt>
+
+        <dd>
+            <h4 style="font-size:20px;">@Html.DisplayFor(model => model.Cost)</h4>
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Product", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <input type="submit" value="Удалить" class="btn btn-danger" style="float: left; margin-right: 10px" />
+        @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-primary" })
+    }
+
+</div>

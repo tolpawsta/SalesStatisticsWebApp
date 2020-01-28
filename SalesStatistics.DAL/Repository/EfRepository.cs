@@ -16,7 +16,7 @@ namespace SalesStatistics.DAL.Entities
             _context = context;
             _dbSet = context.Set<T>();
         }
-        public IQueryable<T> All => _dbSet.AsNoTracking();
+        public IQueryable<T> All => _dbSet;
         public void Add(T entity)
         {
             _dbSet.Add(entity);
@@ -43,7 +43,6 @@ namespace SalesStatistics.DAL.Entities
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
         public async Task SaveChangesAsync()
         {

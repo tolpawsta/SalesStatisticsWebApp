@@ -1,10 +1,6 @@
 ﻿using SalesStatistics.Core.Interfaces;
 using SalesStatistics.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SalesStatistics.Web.Controllers
@@ -22,24 +18,32 @@ namespace SalesStatistics.Web.Controllers
         public async Task<ActionResult> Index()
         {
             var products = await _service.GetAllAsync();
-            if (products==null)
-            {
-                ViewBag.Message = "Sorry product not found";
-            }
-            return View(products);
+             if (products == null)
+             {
+                 ViewBag.Message = "Sorry product not found";
+             }
+             return View(products);
         }
 
         // GET: Product/Details/5
-        public async Task<ActionResult> Details(int id=0)
+        public async Task<ActionResult> Details(int id = 0)
         {
             var model = await _service.GetByIdAsync(id);
-            if (model==null)
+            if (model == null)
             {
                 return RedirectToAction("Index");
             }
             return View(model);
         }
-
+        public async Task<ActionResult> GetProductsFilter(string filterValue)
+        {
+            var products = await _service.GetEntitiesWhere(p => p.Name.Contains(filterValue) || p.Cost.ToString().Contains(filterValue));
+            if (products == null)
+            {
+                ViewBag.Message = "Sorry product not found";
+            }
+            return View(products);
+        }
         // GET: Product/Create
         public ActionResult Create()
         {
@@ -48,13 +52,12 @@ namespace SalesStatistics.Web.Controllers
 
         // POST: Product/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public async Task<ActionResult> Create(Product model)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Create");
+                await _service.CreateAsync(model);
+                return RedirectToAction("Index");
             }
             catch
             {
@@ -65,39 +68,51 @@ namespace SalesStatistics.Web.Controllers
         // GET: Product/Edit/5
         public ActionResult Edit(int id)
         {
+            
             return View();
         }
 
         // POST: Product/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
+        public async Task<ActionResult> Edit(Product model)
+        { 
             try
             {
-                // TODO: Add update logic here
-
+                Product product = await _service.GetByIdAsync(model.Id);
+                if (product != null)
+                {
+                    product.Name = model.Name;
+                    product.Cost = model.Cost;
+                    await _service.EditAsync(product);
+                }
                 return RedirectToAction("Index");
             }
             catch
             {
+                ViewBag.Error = "Error";
                 return View();
             }
         }
-
-        // GET: Product/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            Product productDb = await _service.GetByIdAsync(id);
+            if (productDb==null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(productDb);
         }
-
         // POST: Product/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public async Task<ActionResult> Delete(int id, Product model)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                Product product = await _service.GetByIdAsync(id);
+                if (product != null)
+                {
+                    await _service.DeleteAsync(product);
+                }
                 return RedirectToAction("Index");
             }
             catch
