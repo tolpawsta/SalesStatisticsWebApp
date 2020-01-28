@@ -1,6 +1,9 @@
-﻿using System;
+﻿using SalesStatistics.Core.Interfaces;
+using SalesStatistics.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,21 +11,46 @@ namespace SalesStatistics.Web.Controllers
 {
     public class OrderController : Controller
     {
-        // GET: Order
-        public ActionResult Index()
+        public readonly IService<Order> _dbOrders;
+        public readonly IService<Customer> _dbCustomers;
+        public readonly IService<Product> _dbProducts;
+
+        public OrderController(IService<Order> dbOrders, IService<Customer> dbCustomers, IService<Product> dbProducts)
         {
-            return View();
+            _dbOrders = dbOrders;
+            _dbCustomers = dbCustomers;
+            _dbProducts = dbProducts;
+        }
+
+        // GET: Order
+        public async Task<ActionResult> Index()
+        {
+            var orders = await _dbOrders.GetAllAsync();
+            return View(orders);
         }
 
         // GET: Order/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var order =await _dbOrders.GetByIdAsync(id);
+            return View(order);
         }
 
         // GET: Order/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            var customers = await _dbCustomers.GetAllAsync();
+            var products = await _dbProducts.GetAllAsync();
+            if (customers==null)
+            {
+                return RedirectToAction("Create","Customer");
+            }
+            if (products == null)
+            {
+                return RedirectToAction("Create", "Product");
+            }
+            ViewBag.Customers = new SelectList(customers, "Id", "Fistname" + " " + "Lastname");
+            ViewBag.Products = new SelectList(products, "Id", "Name");
             return View();
         }
 
