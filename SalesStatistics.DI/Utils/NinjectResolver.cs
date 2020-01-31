@@ -34,12 +34,16 @@ namespace SalesStatistics.DI.Utils
             _kernel.Bind<IService<Customer>>().To<CustomerService>();
             _kernel.Bind<IService<Manager>>().To<ManagerService>();
             _kernel.Bind<IService<Order>>().To<OrderService>();
-           // _kernel.Bind<IService<Role>>().To<RoleService>();
+            _kernel.Bind<IService<Report>>().To<ReportService>();
             _kernel.Bind<IRepository<Product>>().To<EfRepository<Product>>();
             _kernel.Bind<IRepository<Manager>>().To<EfRepository<Manager>>();
             _kernel.Bind<IRepository<Order>>().To<EfRepository<Order>>();
             _kernel.Bind<IRepository<Customer>>().To<EfRepository<Customer>>();
+            _kernel.Bind<IRepository<Report>>().To<EfRepository<Report>>();
             _kernel.Bind<UserManager<User>>().To<SalesUserManager>();
+            _kernel.Bind<RoleManager<Role>>().To<SalesRoleManager>();
+            _kernel.Bind<IEfUnitOfWork>().To<IEFManager>();
+
         }
     }
 }

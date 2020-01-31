@@ -1,6 +1,10 @@
-﻿using System;
+﻿using SalesStatistics.Core.Interfaces;
+using SalesStatistics.Core.Models;
+using SalesStatistics.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,18 +12,35 @@ namespace SalesStatistics.Web.Controllers
 {
     public class CustomerController : Controller
     {
-        // GET: Customer
-        public ActionResult Index()
+        private readonly IService<Customer> _service;
+
+        public CustomerController(IService<Customer> service)
         {
-            return View();
+            _service = service;
+        }
+
+        // GET: Customer
+        public async Task<ActionResult> Index()
+        {
+            var customers = await _service.GetAllAsync();
+            if (customers == null || customers.Count()==0)
+            {
+                ViewBag.Message = "Sorry product not found";
+            }
+            return View(customers);
         }
 
         // GET: Customer/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var model = await _service.GetByIdAsync(id);
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
-
+        
         // GET: Customer/Create
         public ActionResult Create()
         {
@@ -28,12 +49,12 @@ namespace SalesStatistics.Web.Controllers
 
         // POST: Customer/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+       
+        public async Task<ActionResult> Create(Customer model)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                await _service.CreateAsync(model);
                 return RedirectToAction("Index");
             }
             catch
@@ -43,6 +64,7 @@ namespace SalesStatistics.Web.Controllers
         }
 
         // GET: Customer/Edit/5
+       
         public ActionResult Edit(int id)
         {
             return View();
@@ -50,34 +72,49 @@ namespace SalesStatistics.Web.Controllers
 
         // POST: Customer/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Edit(CreateEditViewModel model)
         {
             try
             {
-                // TODO: Add update logic here
-
+                Customer castomer = await _service.GetByIdAsync(model.Id);
+                if (castomer != null)
+                {
+                    castomer.FirstName = model.FirstName;
+                    castomer.LastName = model.LastName;
+                    await _service.EditAsync(castomer);
+                }
                 return RedirectToAction("Index");
             }
             catch
             {
+                ViewBag.Error = "Error";
                 return View();
             }
         }
 
         // GET: Customer/Delete/5
-        public ActionResult Delete(int id)
+        
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            Customer customerDb = await _service.GetByIdAsync(id);
+            if (customerDb == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(customerDb);
         }
 
         // POST: Customer/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public async Task<ActionResult> Delete(int id, FormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                Customer customer = await _service.GetByIdAsync(id);
+                if (customer != null)
+                {
+                    await _service.DeleteAsync(customer);
+                }
                 return RedirectToAction("Index");
             }
             catch

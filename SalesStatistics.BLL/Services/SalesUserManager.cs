@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using SalesStatistics.BLL.Identity;
 using SalesStatistics.Core.Models;
 using SalesStatistics.DAL.Entities;
 
@@ -17,8 +18,17 @@ namespace SalesStatistics.BLL.Services
            IOwinContext context)
         {
             UserStore<User> store =new UserStore<User>(context.Get<AppDbContext>());
-            SalesUserManager service = new SalesUserManager(store);
-            return service;
+            SalesUserManager manager = new SalesUserManager(store);
+            manager.PasswordValidator = new PasswordValidator
+            {
+                RequiredLength = 6,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = true,
+                RequireUppercase = true
+            };
+            manager.UserValidator = new AppUserValidator();            
+            return manager;
         }
     }
 }

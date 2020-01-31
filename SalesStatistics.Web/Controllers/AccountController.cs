@@ -1,88 +1,100 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using SalesStatistics.Core.Models;
 using System.Web;
 using System.Web.Mvc;
+using SalesStatistics.BLL.Services;
+using System.Threading.Tasks;
+using SalesStatistics.Web.Models;
+using System.Security.Claims;
+using Microsoft.Owin.Security;
 
 namespace SalesStatistics.Web.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
-        // GET: Account
-        public ActionResult Index()
+        [AllowAnonymous]
+        public ActionResult Login(string returnUrl)
         {
+            ViewBag.returnUrl = returnUrl;
             return View();
         }
-
-        // GET: Account/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Account/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Account/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel details, string returnUrl)
         {
-            try
+            User user = await UserManager.FindAsync(details.Name, details.Password);
+            if (user == null)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                ModelState.AddModelError("", "Некорректное имя или пароль.");
             }
-            catch
+            else
             {
-                return View();
+                ClaimsIdentity ident = await UserManager.CreateIdentityAsync(user,
+                DefaultAuthenticationTypes.ApplicationCookie);
+                AuthManager.SignOut();
+                AuthManager.SignIn(new AuthenticationProperties
+                {
+                    IsPersistent = false
+                }, ident);
+                return Redirect(returnUrl);
             }
+            return View(details);
         }
-
-        // GET: Account/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Registr()
         {
+            ViewBag.Operation = "Зарегистрироваться";
             return View();
         }
-
-        // POST: Account/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Registr(CreateViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                User user = new User() { UserName = model.Name, Email = model.Email };
 
-                return RedirectToAction("Index");
+                IdentityResult result =
+                    await UserManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    AddErrorsFromResult(result);
+                }
             }
-            catch
+            return View(model);
+        }
+        private IAuthenticationManager AuthManager
+        {
+            get
             {
-                return View();
+                return HttpContext.GetOwinContext().Authentication;
             }
         }
-
-        // GET: Account/Delete/5
-        public ActionResult Delete(int id)
+        private SalesUserManager UserManager
         {
-            return View();
-        }
-
-        // POST: Account/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
+            get
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                return HttpContext.GetOwinContext().GetUserManager<SalesUserManager>();
             }
-            catch
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+           AuthManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
+        }
+        private void AddErrorsFromResult(IdentityResult result)
+        {
+            foreach (string error in result.Errors)
             {
-                return View();
+                ModelState.AddModelError("", error);
             }
         }
     }

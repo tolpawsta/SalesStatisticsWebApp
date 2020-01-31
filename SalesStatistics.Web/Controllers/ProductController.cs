@@ -18,11 +18,11 @@ namespace SalesStatistics.Web.Controllers
         public async Task<ActionResult> Index()
         {
             var products = await _service.GetAllAsync();
-             if (products == null)
-             {
-                 ViewBag.Message = "Sorry product not found";
-             }
-             return View(products);
+            if (products == null)
+            {
+                ViewBag.Message = "Sorry product not found";
+            }
+            return View(products);
         }
 
         // GET: Product/Details/5
@@ -44,6 +44,7 @@ namespace SalesStatistics.Web.Controllers
             }
             return View(products);
         }
+       
         // GET: Product/Create
         public ActionResult Create()
         {
@@ -52,10 +53,12 @@ namespace SalesStatistics.Web.Controllers
 
         // POST: Product/Create
         [HttpPost]
+       
         public async Task<ActionResult> Create(Product model)
         {
             try
             {
+
                 await _service.CreateAsync(model);
                 return RedirectToAction("Index");
             }
@@ -66,16 +69,18 @@ namespace SalesStatistics.Web.Controllers
         }
 
         // GET: Product/Edit/5
+        
         public ActionResult Edit(int id)
         {
-            
+
             return View();
         }
 
         // POST: Product/Edit/5
         [HttpPost]
+        
         public async Task<ActionResult> Edit(Product model)
-        { 
+        {
             try
             {
                 Product product = await _service.GetByIdAsync(model.Id);
@@ -96,7 +101,7 @@ namespace SalesStatistics.Web.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             Product productDb = await _service.GetByIdAsync(id);
-            if (productDb==null)
+            if (productDb == null)
             {
                 return RedirectToAction("Index");
             }

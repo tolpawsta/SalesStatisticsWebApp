@@ -1,14 +1,9 @@
-﻿@model SalesStatistics.Core.Models.Order
-
+﻿@using SalesStatistics.Web.Models
+@model OrderCreateViewModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Scripts {
-    @Scripts.Render("~/scripts/jquery-ui.js")
-    @Scripts.Render("~/scripts/jquery-1.12.4.js")
-}
-
 
 <h2>Добавить менеджера</h2>
 
@@ -32,21 +27,46 @@
             <tbody>
                 <tr>
                     <td scope="col">
-                        <input class="datefield" data-val="true" data-val-required="Date is required"
-                               id="ReleaseDate" name="ReleaseDate" type="date" value="1/11/1989" />
-                        @String.Format("{0:d}", Model.OrderDate)
+                        <p>
+                            Дата заказа<br />
+                            @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control", name = "OrderDate" } })
+                            @Html.ValidationMessageFor(model => model.OrderDate)
+                        </p>
                     </td>
                     <td scope="col">
-                        @Html.DropDownList("Покупатель", (SelectList)ViewBag["Customers"], "Выберите покупателя")
-                        @Html.ValidationMessageFor(model => model.CustomerId)
+                        <p>
+                            Выберите покупателя<br />
+                            @Html.DropDownListFor(model => model.CustomerId, Model.Customers, new { htmlAttributes = new { @class = "form-control", name = "Customer" } })
+                            @Html.ValidationMessageFor(model => model.CustomerId)
+                        </p>
                     </td>
                     <td scope="col">
-                        @Html.DropDownList("Товар", (SelectList)ViewBag["Products"], "Выберите товар")
-                        @Html.ValidationMessageFor(model => model.ProductId)
+                        <p>
+                            Выберите товар<br />
+                            @Html.DropDownListFor(model => model.ProductId, Model.Products, new { htmlAttributes = new { @class = "form-control", name = "Product" } })
+                            @Html.ValidationMessageFor(model => model.ProductId)
+                        </p>
                     </td>
                     <td scope="col">
-                        @Html.EditorFor(model => model.Price)
-                        @Html.ValidationMessageFor(model => model.Price)
+                        <p>
+                            Дата отчета<br />
+                            @Html.EditorFor(model => model.ReportDate, new { htmlAttributes = new { @class = "form-control", name = "OrderDate" } })
+                            @Html.ValidationMessageFor(model => model.OrderDate)
+                        </p>
+                    </td>
+                    <td scope="col">
+                        <p>
+                            Выберите менеджера<br />
+                            @Html.DropDownListFor(model => model.ManagerId, Model.Managers, new { htmlAttributes = new { @class = "form-control", name = "Product" } })
+                            @Html.ValidationMessageFor(model => model.ManagerId)
+                        </p>
+                    </td>
+                    <td scope="col">
+                        <p>
+                            Укажите сумму<br />
+                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", name = "Price" } })
+                            @Html.ValidationMessageFor(model => model.Price)
+                        </p>
                     </td>
                 </tr>
             </tbody>
@@ -59,9 +79,4 @@
         </div>
     </div>
 }
-<script>
-    $(function () {
-        $(".datefield").datepicker();
-    });
-</script>
 

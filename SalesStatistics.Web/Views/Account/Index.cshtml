@@ -29,15 +29,10 @@
                     <td>@user.Id</td>
                     <td>@user.UserName</td>
                     <td>@user.Email</td>
-                    <td>
-                        @Html.ActionLink("Редактировать", "Edit", new {id=user.Id,email=user.Email,password=user.PasswordHash }, new { @class = "btn btn-primary" })
-                        @Html.ActionLink("Удалить", "Delete", null, new { @class = "btn btn-primary" })
-                    </td>
                 </tr>
             }
         }
     </table>
 </div>
 @Html.ActionLink("Создать", "Create", null, new { @class = "btn btn-primary" })
-
 

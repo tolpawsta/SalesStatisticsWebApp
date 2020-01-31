@@ -16,9 +16,7 @@ namespace SalesStatistics.BLL.IdentityConfiguration
         {
             app.CreatePerOwinContext<AppDbContext>(AppDbContext.Create);
             app.CreatePerOwinContext<SalesUserManager>(SalesUserManager.Create);
-            app.CreatePerOwinContext<RoleManager<Role>>((option, context) =>
-            new RoleManager<Role>(
-                new RoleStore<Role>(context.Get<AppDbContext>())));
+            app.CreatePerOwinContext<SalesRoleManager>(SalesRoleManager.Create);
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
 

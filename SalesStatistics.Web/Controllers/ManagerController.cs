@@ -31,6 +31,7 @@ namespace SalesStatistics.Web.Controllers
         }
 
         // GET: Manager/Create
+        [Authorize(Roles ="Admin")]
         public ActionResult Create()
         {
             return View();
@@ -38,6 +39,7 @@ namespace SalesStatistics.Web.Controllers
 
         // POST: Manager/Create
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create(Manager model)
         {
             try
@@ -59,6 +61,7 @@ namespace SalesStatistics.Web.Controllers
 
         // POST: Manager/Edit/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(Manager model)
         {
             try
@@ -77,7 +80,7 @@ namespace SalesStatistics.Web.Controllers
                 return View();
             }
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Manager/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
@@ -91,6 +94,7 @@ namespace SalesStatistics.Web.Controllers
 
         // POST: Manager/Delete/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id,Manager model)
         {
             try

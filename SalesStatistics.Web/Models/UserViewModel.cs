@@ -6,7 +6,7 @@ using System.Web;
 
 namespace SalesStatistics.Web.Models
 {
-    public class CreateModel
+    public class CreateViewModel
     {
         [Required]
         public string Name { get; set; }
@@ -17,5 +17,11 @@ namespace SalesStatistics.Web.Models
         [Required]
         public string Password { get; set; }
     }
-
+    public class LoginViewModel
+    {
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string Password { get; set; }
+    }
 }

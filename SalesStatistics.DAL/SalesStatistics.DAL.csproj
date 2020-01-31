@@ -101,9 +101,7 @@
       <Name>SalesStatistics.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Identity\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202001251621284_InitDb.resx">
       <DependentUpon>202001251621284_InitDb.cs</DependentUpon>

@@ -1,88 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using SalesStatistics.BLL.Services;
+using SalesStatistics.Core.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace SalesStatistics.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
-        // GET: Role
+        private SalesUserManager UserManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<SalesUserManager>();
+            }
+        }
+        private SalesRoleManager RoleManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<SalesRoleManager>();
+            }
+        }
         public ActionResult Index()
         {
-            return View();
+            return View(RoleManager.Roles);
         }
-
-        // GET: Role/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Role/Create
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Role/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public async Task<ActionResult> Create([Required]string name)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                IdentityResult result
+                = await RoleManager.CreateAsync(new Role(name));
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    AddErrorsFromResult(result);
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(name);
         }
-
-        // GET: Role/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Role/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Delete(string id)
         {
-            try
+            Role role = await RoleManager.FindByIdAsync(id);
+            if (role != null)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                IdentityResult result = await RoleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("Error", result.Errors);
+                }
             }
-            catch
+            else
             {
-                return View();
+                return View("Error", new string[] { "Роль не найдена" });
             }
         }
-
-        // GET: Role/Delete/5
-        public ActionResult Delete(int id)
+        private void AddErrorsFromResult(IdentityResult result)
         {
-            return View();
-        }
-
-        // POST: Role/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
+            foreach (string error in result.Errors)
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
+                ModelState.AddModelError("", error);
             }
         }
     }

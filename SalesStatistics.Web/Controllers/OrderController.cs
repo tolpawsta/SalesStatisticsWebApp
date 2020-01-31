@@ -1,10 +1,8 @@
 ﻿using SalesStatistics.Core.Interfaces;
 using SalesStatistics.Core.Models;
-using System;
-using System.Collections.Generic;
+using SalesStatistics.Web.Models;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SalesStatistics.Web.Controllers
@@ -14,12 +12,18 @@ namespace SalesStatistics.Web.Controllers
         public readonly IService<Order> _dbOrders;
         public readonly IService<Customer> _dbCustomers;
         public readonly IService<Product> _dbProducts;
+        public readonly IService<Report> _dbReports;
+        public readonly IService<Manager> _dbManagers;
 
-        public OrderController(IService<Order> dbOrders, IService<Customer> dbCustomers, IService<Product> dbProducts)
+
+
+        public OrderController(IService<Order> dbOrders, IService<Customer> dbCustomers, IService<Product> dbProducts, IService<Report> dbReports, IService<Manager> dbManagers)
         {
             _dbOrders = dbOrders;
             _dbCustomers = dbCustomers;
             _dbProducts = dbProducts;
+            _dbReports = dbReports;
+            _dbManagers = dbManagers;
         }
 
         // GET: Order
@@ -32,7 +36,7 @@ namespace SalesStatistics.Web.Controllers
         // GET: Order/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var order =await _dbOrders.GetByIdAsync(id);
+            var order = await _dbOrders.GetByIdAsync(id);
             return View(order);
         }
 
@@ -41,33 +45,62 @@ namespace SalesStatistics.Web.Controllers
         {
             var customers = await _dbCustomers.GetAllAsync();
             var products = await _dbProducts.GetAllAsync();
-            if (customers==null)
+            var managers = await _dbManagers.GetAllAsync();
+            if (customers == null || customers.Count() == 0)
             {
-                return RedirectToAction("Create","Customer");
+                return RedirectToAction("Create", "Customer");
             }
-            if (products == null)
+            if (products == null || products.Count() == 0)
             {
                 return RedirectToAction("Create", "Product");
             }
-            ViewBag.Customers = new SelectList(customers, "Id", "Fistname" + " " + "Lastname");
-            ViewBag.Products = new SelectList(products, "Id", "Name");
-            return View();
+            if (managers == null || managers.Count() == 0)
+            {
+                return RedirectToAction("Create", "Manager");
+            }
+            OrderCreateViewModel orderVM = new OrderCreateViewModel();
+            orderVM.Products = new SelectList(products, "Id", "Name");
+            orderVM.Customers = new SelectList(customers, "Id", "LastName");
+            orderVM.Managers = new SelectList(managers, "Id", "LastName");
+            return View(orderVM);
         }
 
         // POST: Order/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public async Task<ActionResult> Create(OrderCreateViewModel model)
         {
-            try
+            if (model != null)
             {
-                // TODO: Add insert logic here
+                try
+                {
+                    Report report = new Report()
+                    {
+                        ManagerId = model.ManagerId,
+                        ReportDate = model.ReportDate,
+                    };
+                    await _dbReports.CreateAsync(report);
+                    var reports = await _dbReports.GetAllAsync();
+                    Order order = new Order()
+                    {
+                        CustomerId = model.CustomerId,
+                        Customer = await _dbCustomers.GetByIdAsync(model.CustomerId),
+                        ProductId = model.ProductId,
+                        Product = await _dbProducts.GetByIdAsync(model.ProductId),
+                        Price = model.Price,
+                        ReportId = reports.FirstOrDefault().Id,
+                        Report = await _dbReports.GetByIdAsync(reports.FirstOrDefault().Id)
+                        
+                    };
+                    await _dbOrders.CreateAsync(order);
+                    return RedirectToAction("Index");
 
-                return RedirectToAction("Index");
+                }
+                catch
+                {
+                    return View();
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View();
         }
 
         // GET: Order/Edit/5

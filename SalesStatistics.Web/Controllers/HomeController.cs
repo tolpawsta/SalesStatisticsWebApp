@@ -10,7 +10,7 @@ namespace SalesStatistics.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Order");
         }
 
         public ActionResult About()

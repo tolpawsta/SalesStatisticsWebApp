@@ -26,12 +26,14 @@
             <div id="navbarNavAltMarkup">
                 <ul class="nav navbar-nav">
                     <li class="nav-item active">@Html.ActionLink("Продажи", "Index", "Order")</li>
-                    <li>@Html.ActionLink("Продукты", "Index", "Product")</li>
-                    <li>@Html.ActionLink("Mенеджеры", "Index", "Manager")</li>
-                    <li>@Html.ActionLink("Информация", "About", "Home")</li>
-                    <li>@Html.ActionLink("Связаться", "Contact", "Home")</li>                    
-                   @Html.Partial("_LoginPartial")
-                </ul>
+                   
+                        <li>@Html.ActionLink("Продукты", "Index", "Product")</li>
+                        <li>@Html.ActionLink("Mенеджеры", "Index", "Manager")</li>
+                        <li>@Html.ActionLink("Покупатели", "Index", "Customer")</li>                    
+                        <li>@Html.ActionLink("Информация", "About", "Home")</li>
+                        <li>@Html.ActionLink("Связаться", "Contact", "Home")</li>
+                        @Html.Partial("_LoginPartial")
+                    </ul>
             </div>
         </div>
     </div>
